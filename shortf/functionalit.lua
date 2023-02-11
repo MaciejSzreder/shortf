@@ -161,4 +161,25 @@ function expression:__concat(other)
 	end)
 end
 
+function expression:__index(other)
+	if is_it_function(self) and is_it_function(other) then
+		return register(function (arg)
+			return self(arg)[other(arg)]
+		end)
+	end
+	if is_it_function(self) then
+		return register(function (arg)
+			return self(arg)[other]
+		end)
+	end
+	if is_it_function(other) then
+		return register(function (arg)
+			return self[other(arg)]
+		end)
+	end
+	return register(function (arg)
+		return self[other]
+	end)
+end
+
 return it
