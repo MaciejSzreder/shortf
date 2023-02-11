@@ -1,3 +1,6 @@
+local fun_mt
+local creator
+
 local it_functions = {}
 local function register(fun)
 	it_functions[fun]=true
@@ -7,8 +10,6 @@ end
 local function is_it_function(fun)
 	return it_functions[fun]
 end
-
-local fun_mt
 
 local function function_creator(fun)
 	return fun or function(...)return...end
@@ -20,7 +21,6 @@ local function callable_creator(fun)
 	},fun_mt)
 end
 
-local creator
 local function initialize(install)
 	local fun = function()end
 	creator = function_creator
@@ -40,38 +40,15 @@ local function initialize(install)
 	end
 	-- there is no agree to install it or there is no option to install it
 	creator = callable_creator
-	return	-- it is callable, fun_mt is new metatable
+	return	-- creator creates callable, fun_mt is new metatable
 end
 
-local function create_it(install)
-	if not creator then
-		initialize(install)
-	end
-	return creator(),fun_mt
-	-- local fun = function()end
-	-- local it =  function(...)return...end
-	-- local fun_mt = {}
-	-- if install and debug then
-	-- 	if debug.getmetatable then
-	-- 		fun_mt = debug.getmetatable(fun);
-	-- 		if type(fun_mt)=='table' then
-	-- 			return it, fun_mt	-- it is function, fun_mt is old metatable
-	-- 		end
-	-- 	end
-	-- 	fun_mt = {}
-	-- 	if debug.setmetatable then
-	-- 		debug.setmetatable(fun,fun_mt)
-	-- 		return it,fun_mt	-- it is function, fun_mt is new metatable
-	-- 	end
-	-- end
-	-- -- there is no agree to install it or there is no option to install it
-	-- return setmetatable({action=it},fun_mt), fun_mt	-- it is callable, fun_mt is new metatable
+local function create(fun)
+	return register(creator(fun))
 end
 
 return function (install)
-
-	local it, fun_mt = create_it(install)
-	register(it)
+	initialize(install)
 
 	local old_add = fun_mt.__add
 	function fun_mt:__add(other)
@@ -277,5 +254,5 @@ return function (install)
 		return self.action(...)
 	end
 
-	return it
+	return create()
 end
