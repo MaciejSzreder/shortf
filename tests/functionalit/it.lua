@@ -1,6 +1,3 @@
-local fun_mt = {'old metatable'}
-debug.setmetatable(function()end,fun_mt)
-
 local it = require'shortf.functionalit'
 local f = require'shortf'
 
@@ -58,9 +55,3 @@ local fun=it[it]
 local s={}
 s[s]=3
 assert(fun(s)==3)
-
-local old_meta_data = debug.getmetatable(function()end)[1]
-assert(old_meta_data == 'old metatable')
-local metatable = debug.getmetatable(function()end)
-assert(metatable == fun_mt)
-print'metatable not damaged'

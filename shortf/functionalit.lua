@@ -15,6 +15,7 @@ end
 
 local it =  register(function(...)return...end)
 
+local old_add = fun_mt.__add
 function fun_mt:__add(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
@@ -30,6 +31,9 @@ function fun_mt:__add(other)
 		return register(function (arg)
 			return self + other(arg)
 		end)
+	end
+	if old_add and type(self)=='function' or type(other)=='function' then
+		return old_add(self,other)
 	end
 	return register(function (arg)
 		return self + other
