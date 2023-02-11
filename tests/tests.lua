@@ -25,3 +25,20 @@ print'f creates identical callable to closure function'
 local cashed_f_function = f'x,y''(x^2+y^2)^0.5'
 assert(f_function==cashed_f_function)
 print'f cashes callables'
+
+
+local f_fib = f'n''n<2 and n or self(n-1)+self(n-2)'
+assert(type(f_fib)=='function')
+
+local function fib(n)
+	local f1,f2 = 0,1
+	for i=1,n do
+		f1,f2 = f2,f1+f2
+	end
+	return f1
+end
+
+for i=1,10 do
+	assert(fib(i)==f_fib(i))
+end
+print'recurencive f-function works'

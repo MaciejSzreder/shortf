@@ -88,3 +88,15 @@ There also other invalid identifiers whitch was used to create closures. Some of
 `f'false,'`  |`f'''false'`
 `f'nil'`     |`f'''nil'`
 `f'if'`      |`f'condition, onTrue, onFalse''(condition and {onTrue} or {onFalse})[1]'`
+
+### recursion in `f`-closures
+Performing recursion by calling function name do not work, because `f` do not have access to local variables. To solve this problem `f` provides local variable `self` containing current function.
+
+Recursive calculating Fibonacci numbers.
+```lua
+local fib = f'n'[[
+	n<2
+	and n
+	or self(n-1)+self(n-1)
+]]
+```
