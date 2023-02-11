@@ -1,4 +1,4 @@
-local it = require'shortf.functionalit'
+local it = require'shortf.functionalit'()
 local f = require'shortf'
 
 local double = it*2
