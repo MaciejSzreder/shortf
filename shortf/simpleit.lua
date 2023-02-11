@@ -13,8 +13,8 @@ function expression.accepts(expression)
 	return getmetatable(expression)==expression_mt
 end
 
-function expression_mt:__call(arg)
-	return self.action(arg)
+function expression_mt:__call(a)
+	return self.action(a)
 end
 
 function expression_mt:__add(other)
@@ -22,27 +22,27 @@ function expression_mt:__add(other)
 		expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)+other(arg)
+		return expression.new(function(a)
+			return self(a)+other(a)
 		end)
 	end
 	if 
 		expression.accepts(self)
 		and not expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)+other
+		return expression.new(function(a)
+			return self(a)+other
 		end)
 	end
 	if 
 		not expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self+other(arg)
+		return expression.new(function(a)
+			return self+other(a)
 		end)
 	end
-	return expression.new(function(arg)
+	return expression.new(function(a)
 		return self+other
 	end)
 end
@@ -52,27 +52,27 @@ function expression_mt:__sub(other)
 		expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)-other(arg)
+		return expression.new(function(a)
+			return self(a)-other(a)
 		end)
 	end
 	if 
 		expression.accepts(self)
 		and not expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)-other
+		return expression.new(function(a)
+			return self(a)-other
 		end)
 	end
 	if 
 		not expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self-other(arg)
+		return expression.new(function(a)
+			return self-other(a)
 		end)
 	end
-	return expression.new(function(arg)
+	return expression.new(function(a)
 		return self-other
 	end)
 end
@@ -82,27 +82,27 @@ function expression_mt:__mul(other)
 		expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)*other(arg)
+		return expression.new(function(a)
+			return self(a)*other(a)
 		end)
 	end
 	if 
 		expression.accepts(self)
 		and not expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)*other
+		return expression.new(function(a)
+			return self(a)*other
 		end)
 	end
 	if 
 		not expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self*other(arg)
+		return expression.new(function(a)
+			return self*other(a)
 		end)
 	end
-	return expression.new(function(arg)
+	return expression.new(function(a)
 		return self*other
 	end)
 end
@@ -112,27 +112,27 @@ function expression_mt:__div(other)
 		expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)/other(arg)
+		return expression.new(function(a)
+			return self(a)/other(a)
 		end)
 	end
 	if 
 		expression.accepts(self)
 		and not expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)/other
+		return expression.new(function(a)
+			return self(a)/other
 		end)
 	end
 	if 
 		not expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self/other(arg)
+		return expression.new(function(a)
+			return self/other(a)
 		end)
 	end
-	return expression.new(function(arg)
+	return expression.new(function(a)
 		return self/other
 	end)
 end
@@ -142,28 +142,58 @@ function expression_mt:__mod(other)
 		expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)%other(arg)
+		return expression.new(function(a)
+			return self(a)%other(a)
 		end)
 	end
 	if 
 		expression.accepts(self)
 		and not expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)%other
+		return expression.new(function(a)
+			return self(a)%other
 		end)
 	end
 	if 
 		not expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self%other(arg)
+		return expression.new(function(a)
+			return self%other(a)
 		end)
 	end
-	return expression.new(function(arg)
+	return expression.new(function(a)
 		return self%other
+	end)
+end
+
+function expression_mt:__pow(other)
+	if
+		expression.accepts(self)
+		and expression.accepts(other)
+	then
+		return expression.new(function(a)
+			return self(a)^other(a)
+		end)
+	end
+	if 
+		expression.accepts(self)
+		and not expression.accepts(other)
+	then
+		return expression.new(function(a)
+			return self(a)^other
+		end)
+	end
+	if 
+		not expression.accepts(self)
+		and expression.accepts(other)
+	then
+		return expression.new(function(a)
+			return self^other(a)
+		end)
+	end
+	return expression.new(function(a)
+		return self^other
 	end)
 end
 
@@ -172,28 +202,59 @@ function expression_mt:__concat(other)
 		expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)..other(arg)
+		return expression.new(function(a)
+			return self(a)..other(a)
 		end)
 	end
 	if 
 		expression.accepts(self)
 		and not expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self(arg)..other
+		return expression.new(function(a)
+			return self(a)..other
 		end)
 	end
 	if 
 		not expression.accepts(self)
 		and expression.accepts(other)
 	then
-		return expression.new(function(arg)
-			return self..other(arg)
+		return expression.new(function(a)
+			return self..other(a)
 		end)
 	end
-	return expression.new(function(arg)
+	return expression.new(function(a)
 		return self..other
+	end)
+end
+
+
+function expression_mt:__index(other)
+	if
+		expression.accepts(self)
+		and expression.accepts(other)
+	then
+		return expression.new(function(a)
+			return self(a)[other(a)]
+		end)
+	end
+	if 
+		expression.accepts(self)
+		and not expression.accepts(other)
+	then
+		return expression.new(function(a)
+			return self(a)[other]
+		end)
+	end
+	if 
+		not expression.accepts(self)
+		and expression.accepts(other)
+	then
+		return expression.new(function(a)
+			return self[other(a)]
+		end)
+	end
+	return expression.new(function(a)
+		return self[other]
 	end)
 end
 

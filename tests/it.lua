@@ -24,16 +24,16 @@ assert(power(3)==9)
 print'multiple it using works'
 
 for _,case in pairs{
-	{o='+',v={2,3,4},r={5,9,7}},
-	{o='-',v={2,3,5},r={-1,4,-2}},
-	{o='*',v={2,3,4},r={6,24,12}},
-	{o='/',v={2,3,4},r={2/3,8/3,3/4}},
-	{o='%',v={11,10,6},r={1,3,4}},
-	{o='^',v={2,3,4},r={8,2^81,81}},
-	{o='..',v={'2','3','4'},r={'23','234','34'}},
-	{o='==',v={2,2,4},r={true,false,false}},
+	{o='+',v={2,3,4},r={5,9,7},it=6},
+	{o='-',v={2,3,5},r={-1,4,-2},it=0},
+	{o='*',v={2,3,4},r={6,24,12},it=9},
+	{o='/',v={2,3,4},r={2/3,8/3,3/4},it=1},
+	{o='%',v={11,10,6},r={1,3,4},it=0},
+	{o='^',v={2,3,4},r={8,2^81,81},it=27},
+	{o='..',v={'2','3','4'},r={'23','234','34'},it='33'},
+	-- {o='==',v={2,2,4},r={true,false,false}},
 	-- {o='<',v={3,3,4},r={false,24,12}},
-	-- {o='[]',v={2,3,4},r={6,24,12}},
+	-- {o='[]',v={{2,3},{2},1},r={nil,3,2},it=nil},
 } do
 	local o = case.o
 	local l,arg,r = unpack(case.v)
@@ -44,4 +44,14 @@ for _,case in pairs{
 	assert(fun(arg)==post)
 	local fun=f(o)(l,f(o)(it,r))
 	assert(fun(arg)==both)
+	local fun=f(o)(it,it)
+	assert(fun(arg)==case.it)
 end
+
+local fun=it[1]
+assert(fun({3})==3)
+
+local fun=it[it]
+local s={}
+s[s]=3
+assert(fun(s)==3)
