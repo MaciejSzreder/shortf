@@ -14,3 +14,6 @@ print'concatenation works'
 
 local quadruple = 2*it*2
 assert(quadruple(3)==12)
+local quadruple = 2*2*2*2*2*it*2*2*2*2*2
+assert(quadruple(10)==10240)
+print'multilevel expression works'
