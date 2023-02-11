@@ -1,6 +1,5 @@
-local it_mt = {}
-local it = setmetatable({},it_mt)
-debug.setmetatable(function()end,it_mt)
+local expression = {}
+debug.setmetatable(function()end,expression)
 
 local it_functions = {}
 
@@ -9,7 +8,9 @@ local function register(fun)
 	return fun
 end
 
-function it_mt:__add(other)
+local it =  register(function(...)return...end)
+
+function expression:__add(other)
 	if self == it and other == it then
 		return register(function (arg)
 			return arg + arg
@@ -40,7 +41,7 @@ function it_mt:__add(other)
 	end)
 end
 
-function it_mt:__mul(other)
+function expression:__mul(other)
 	if self == it and other == it then
 		return register(function (arg)
 			return arg * arg
@@ -86,7 +87,7 @@ function it_mt:__mul(other)
 	end)
 end
 
-function it_mt:__concat(other)
+function expression:__concat(other)
 	if self == it and other == it then
 		return register(function (arg)
 			return arg .. arg
