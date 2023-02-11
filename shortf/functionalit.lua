@@ -8,76 +8,45 @@ local function register(fun)
 	return fun
 end
 
+local function is_it_function(fun)
+	return it_functions[fun]
+end
+
 local it =  register(function(...)return...end)
 
 function expression:__add(other)
-	if self == it and other == it then
+	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
-			return arg + arg
+			return self(arg) + other(arg)
 		end)
 	end
-	if self == it and it_functions[other] then
+	if is_it_function(self) then
 		return register(function (arg)
-			return arg + other(arg)
+			return self(arg) + other
 		end)
 	end
-	if it_functions[self] and other == it then
+	if is_it_function(other) then
 		return register(function (arg)
-			return self(arg) + arg
-		end)
-	end
-	if self == it then
-		return register(function (arg)
-			return arg + other
-		end)
-	end
-	if other == it then
-		return register(function (arg)
-			return self + arg
+			return self + other(arg)
 		end)
 	end
 	return register(function (arg)
-		return self * other
+		return self + other
 	end)
 end
 
 function expression:__mul(other)
-	if self == it and other == it then
-		return register(function (arg)
-			return arg * arg
-		end)
-	end
-	if self == it and it_functions[other] then
-		return register(function (arg)
-			return arg * other(arg)
-		end)
-	end
-	if self == it then
-		return register(function (arg)
-			return arg * other
-		end)
-	end
-	if it_functions[self] and other == it then
-		return register(function (arg)
-			return self(arg) * arg
-		end)
-	end
-	if it_functions[self] and it_functions[other] then
+	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) * other(arg)
 		end)
 	end
-	if it_functions[self] then
+	if is_it_function(self) then
 		return register(function (arg)
 			return self(arg) * other
 		end)
 	end
-	if other == it then
-		return register(function (arg)
-			return self * arg
-		end)
-	end
-	if it_functions[other] then
+	if is_it_function(other) then
 		return register(function (arg)
 			return self * other(arg)
 		end)
@@ -88,19 +57,19 @@ function expression:__mul(other)
 end
 
 function expression:__concat(other)
-	if self == it and other == it then
+	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
-			return arg .. arg
+			return self(arg) .. other(arg)
 		end)
 	end
-	if self == it then
+	if is_it_function(self) then
 		return register(function (arg)
-			return arg .. other
+			return self(arg) .. other
 		end)
 	end
-	if other == it then
+	if is_it_function(other) then
 		return register(function (arg)
-			return self .. arg
+			return self .. other(arg)
 		end)
 	end
 	return register(function (arg)
