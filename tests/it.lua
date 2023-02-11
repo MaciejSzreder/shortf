@@ -11,3 +11,6 @@ assert(prefix'a'=='prefix_a')
 local postfix = it..'_postfix'
 assert(postfix'b'=='b_postfix')
 print'concatenation works'
+
+local quadruple = 2*it*2
+assert(quadruple(3)==12)
