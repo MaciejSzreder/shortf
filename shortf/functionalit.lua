@@ -1,5 +1,6 @@
-local expression = {}
-debug.setmetatable(function()end,expression)
+local fun = function()end
+local fun_mt = debug.getmetatable(fun) or {}
+debug.setmetatable(fun,fun_mt)
 
 local it_functions = {}
 
@@ -14,7 +15,7 @@ end
 
 local it =  register(function(...)return...end)
 
-function expression:__add(other)
+function fun_mt:__add(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) + other(arg)
@@ -35,7 +36,7 @@ function expression:__add(other)
 	end)
 end
 
-function expression:__sub(other)
+function fun_mt:__sub(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) - other(arg)
@@ -56,7 +57,7 @@ function expression:__sub(other)
 	end)
 end
 
-function expression:__mul(other)
+function fun_mt:__mul(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) * other(arg)
@@ -77,7 +78,7 @@ function expression:__mul(other)
 	end)
 end
 
-function expression:__div(other)
+function fun_mt:__div(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) / other(arg)
@@ -98,7 +99,7 @@ function expression:__div(other)
 	end)
 end
 
-function expression:__mod(other)
+function fun_mt:__mod(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) % other(arg)
@@ -119,7 +120,7 @@ function expression:__mod(other)
 	end)
 end
 
-function expression:__pow(other)
+function fun_mt:__pow(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) ^ other(arg)
@@ -140,7 +141,7 @@ function expression:__pow(other)
 	end)
 end
 
-function expression:__concat(other)
+function fun_mt:__concat(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg) .. other(arg)
@@ -161,7 +162,7 @@ function expression:__concat(other)
 	end)
 end
 
-function expression:__index(other)
+function fun_mt:__index(other)
 	if is_it_function(self) and is_it_function(other) then
 		return register(function (arg)
 			return self(arg)[other(arg)]
