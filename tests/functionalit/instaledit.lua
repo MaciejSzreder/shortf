@@ -1,4 +1,4 @@
-local it = require'shortf.functionalit'
+local it = require'shortf.functionalit.install'
 local f = require'shortf'
 
 local double = it*2
@@ -15,7 +15,9 @@ print'concatenation works'
 
 local quadratic = 2*it*it+it
 assert(quadratic(3)==21)
-print'complex expression works'
+local multilevel = 2*2*2*2*2*it*2*2*2*2*2
+assert(multilevel(10)==10240)
+print'multilevel expression works'
 
 local power = it*it
 assert(power(3)==9)
@@ -37,6 +39,8 @@ for _,case in pairs{
 	assert(fun(arg)==pre)
 	local fun=f(o)(it,r)
 	assert(fun(arg)==post)
+	local fun=f(o)(l,f(o)(it,r))
+	assert(fun(arg)==both)
 	local fun=f(o)(it,it)
 	assert(fun(arg)==case.it)
 end

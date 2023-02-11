@@ -1,4 +1,6 @@
-local fun_mt = {}
+local fun = function()end
+local fun_mt = debug.getmetatable(fun) or {}
+debug.setmetatable(fun,fun_mt)
 
 local it_functions = {}
 
@@ -11,7 +13,7 @@ local function is_it_function(fun)
 	return it_functions[fun]
 end
 
-local it =  register(setmetatable({},fun_mt))
+local it =  register(function(...)return...end)
 
 local old_add = fun_mt.__add
 function fun_mt:__add(other)
@@ -211,11 +213,6 @@ function fun_mt:__index(other)
 	return register(function (arg)
 		return self[other]
 	end)
-end
-
-local old_index = fun_mt.__index
-function fun_mt:__call(...)
-	return ...
 end
 
 return it
