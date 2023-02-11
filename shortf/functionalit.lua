@@ -1,5 +1,6 @@
 local it_mt = {}
 local it = setmetatable({},it_mt)
+debug.setmetatable(function()end,it_mt)
 
 local it_functions = {}
 
@@ -50,19 +51,34 @@ function it_mt:__mul(other)
 			return arg * other(arg)
 		end)
 	end
-	if it_functions[self] and other == it then
-		return register(function (arg)
-			return self(arg) * arg
-		end)
-	end
 	if self == it then
 		return register(function (arg)
 			return arg * other
 		end)
 	end
+	if it_functions[self] and other == it then
+		return register(function (arg)
+			return self(arg) * arg
+		end)
+	end
+	if it_functions[self] and it_functions[other] then
+		return register(function (arg)
+			return self(arg) * other(arg)
+		end)
+	end
+	if it_functions[self] then
+		return register(function (arg)
+			return self(arg) * other
+		end)
+	end
 	if other == it then
 		return register(function (arg)
 			return self * arg
+		end)
+	end
+	if it_functions[other] then
+		return register(function (arg)
+			return self * other(arg)
 		end)
 	end
 	return register(function (arg)

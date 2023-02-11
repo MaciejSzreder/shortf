@@ -15,8 +15,8 @@ print'concatenation works'
 
 local quadratic = 2*it*it+it
 assert(quadratic(3)==21)
-local quadruple = 2*2*2*2*2*it*2*2*2*2*2
-assert(quadruple(10)==10240)
+local multilevel = 2*2*2*2*2*it*2*2*2*2*2
+assert(multilevel(10)==10240)
 print'multilevel expression works'
 
 local power = it*it
