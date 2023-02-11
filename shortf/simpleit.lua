@@ -1,5 +1,4 @@
-local it_mt = {}
-local it = setmetatable({},it_mt)
+local f = require'shortf'
 
 local expression = {}
 local expression_mt = {}
@@ -11,7 +10,7 @@ function expression.new(action)
 end
 
 function expression.accepts(expression)
-	return getmetatable(expression)==expression_mt or getmetatable(expression)==it_mt
+	return getmetatable(expression)==expression_mt
 end
 
 function expression_mt:__call(arg)
@@ -29,27 +28,16 @@ function expression_mt:__mul(other)
 	end)
 end
 
-function it_mt:__mul(other)
+function expression_mt:__concat(other)
 	if expression.accepts(self) then
 		return expression.new(function(arg)
-			return arg*other
+			return self(arg)..other
 		end)
 	end
 	return expression.new(function(arg)
-		return self*arg
+		return self..other(arg)
 	end)
 end
 
-function it_mt:__concat(other)
-	if expression.accepts(self) then
-		return expression.new(function(arg)
-			return arg..other
-		end)
-	end
-	return expression.new(function(arg)
-		return self..arg
-	end)
-end
-
-return it
+return expression.new(f'(...)')
 
