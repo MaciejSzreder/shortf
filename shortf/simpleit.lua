@@ -107,6 +107,36 @@ function expression_mt:__mul(other)
 	end)
 end
 
+function expression_mt:__div(other)
+	if
+		expression.accepts(self)
+		and expression.accepts(other)
+	then
+		return expression.new(function(arg)
+			return self(arg)/other(arg)
+		end)
+	end
+	if 
+		expression.accepts(self)
+		and not expression.accepts(other)
+	then
+		return expression.new(function(arg)
+			return self(arg)/other
+		end)
+	end
+	if 
+		not expression.accepts(self)
+		and expression.accepts(other)
+	then
+		return expression.new(function(arg)
+			return self/other(arg)
+		end)
+	end
+	return expression.new(function(arg)
+		return self/other
+	end)
+end
+
 function expression_mt:__concat(other)
 	if
 		expression.accepts(self)
