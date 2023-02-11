@@ -8,25 +8,64 @@ local function is_it_function(fun)
 	return it_functions[fun]
 end
 
-local function create_it(install)
+local fun_mt
+
+local function function_creator(fun)
+	return fun or function(...)return...end
+end
+
+local function callable_creator(fun)
+	return setmetatable({
+		action=fun or function(...)return...end
+	},fun_mt)
+end
+
+local creator
+local function initialize(install)
 	local fun = function()end
-	local it =  function(...)return...end
-	local fun_mt = {}
+	creator = function_creator
+	fun_mt = {}
 	if install and debug then
 		if debug.getmetatable then
 			fun_mt = debug.getmetatable(fun);
 			if type(fun_mt)=='table' then
-				return it, fun_mt	-- it is function, fun_mt is old metatable
+				return	-- creator returns function, fun_mt is old metatable
 			end
 		end
 		fun_mt = {}
 		if debug.setmetatable then
 			debug.setmetatable(fun,fun_mt)
-			return it,fun_mt	-- it is function, fun_mt is new metatable
+			return	-- creator returns function, fun_mt is new metatable
 		end
 	end
 	-- there is no agree to install it or there is no option to install it
-	return setmetatable({},fun_mt), fun_mt	-- it is callable, fun_mt is new metatable
+	creator = callable_creator
+	return	-- it is callable, fun_mt is new metatable
+end
+
+local function create_it(install)
+	if not creator then
+		initialize(install)
+	end
+	return creator(),fun_mt
+	-- local fun = function()end
+	-- local it =  function(...)return...end
+	-- local fun_mt = {}
+	-- if install and debug then
+	-- 	if debug.getmetatable then
+	-- 		fun_mt = debug.getmetatable(fun);
+	-- 		if type(fun_mt)=='table' then
+	-- 			return it, fun_mt	-- it is function, fun_mt is old metatable
+	-- 		end
+	-- 	end
+	-- 	fun_mt = {}
+	-- 	if debug.setmetatable then
+	-- 		debug.setmetatable(fun,fun_mt)
+	-- 		return it,fun_mt	-- it is function, fun_mt is new metatable
+	-- 	end
+	-- end
+	-- -- there is no agree to install it or there is no option to install it
+	-- return setmetatable({action=it},fun_mt), fun_mt	-- it is callable, fun_mt is new metatable
 end
 
 return function (install)
@@ -235,7 +274,7 @@ return function (install)
 	end
 
 	function fun_mt:__call(...)
-		return ...
+		return self.action(...)
 	end
 
 	return it
