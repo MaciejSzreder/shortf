@@ -41,4 +41,24 @@ end
 for i=1,10 do
 	assert(fib(i)==f_fib(i))
 end
-print'recurencive f-function works'
+
+local multiline_f_closure = f'a,b,c'{
+	'local delta = b^2 - 4*a*c',
+	'local x1 = (-b - delta^0.5)/(2*a)',
+	'local x2 = (-b + delta^0.5)/(2*a)',
+	'return x1,x2'
+}
+
+local multiline_f_closure = f'a,b,c'{[[
+	local delta = b^2 - 4*a*c
+	local x1 = (-b - delta^0.5)/(2*a)
+	local x2 = (-b + delta^0.5)/(2*a)
+	return x1,x2
+]]}
+
+local multiline_f_closure = f'a,b,c'{
+	{delta = 'b^2 - 4*a*c'},
+	{x1 = '(-b - delta^0.5)/(2*a)'},
+	{x2 = '(-b + delta^0.5)/(2*a)'},
+	'return x1,x2'
+}
