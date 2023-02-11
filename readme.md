@@ -100,3 +100,10 @@ local fib = f'n'[[
 	or self(n-1)+self(n-1)
 ]]
 ```
+
+todo
+----
+⬜ currling  
+⬜ upvalues  
+⬜ multiline functions  
+⬜ `it`-closures
