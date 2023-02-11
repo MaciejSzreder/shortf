@@ -19,6 +19,11 @@ end
 
 function expression_mt:__mul(other)
 	if expression.accepts(self) then
+		if expression.accepts(other) then
+			return expression.new(function(arg)
+				return self(arg)*other(arg)
+			end)
+		end
 		return expression.new(function(arg)
 			return self(arg)*other
 		end)
