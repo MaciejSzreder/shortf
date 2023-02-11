@@ -13,8 +13,8 @@ local postfix = it..'_postfix'
 assert(postfix'b'=='b_postfix')
 print'concatenation works'
 
-local quadruple = 2*it*2
-assert(quadruple(3)==12)
+local quadratic = 2*it*it+it
+assert(quadratic(3)==21)
 local quadruple = 2*2*2*2*2*it*2*2*2*2*2
 assert(quadruple(10)==10240)
 print'multilevel expression works'
