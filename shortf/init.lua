@@ -3,25 +3,29 @@ local concat = table.concat
 local memorized = {}
 local operators = {}
 
+local function build(args,body)
+	memorized[args] = memorized[args] or {}
+	local fun = memorized[args][body] or loadstring(concat{
+		[[
+			local self
+			self = function(]],args,[[)
+				local f, it = require'shortf'
+				return ]],body,[[
+			end
+			return self
+		]]
+	})()
+	memorized[args][body] = fun
+	return fun
+end
+
 local function f(args)
 	local o = operators[args]
 	if o then
 		return o
 	end
-	memorized[args] = memorized[args] or {}
 	return function(body)
-		local fun = memorized[args][body] or loadstring(concat{
-			[[
-				local self
-				self = function(]],args,[[)
-					local f, it = require'shortf'
-					return ]],body,[[
-				end
-				return self
-			]]
-		})()
-		memorized[args][body] = fun
-		return fun
+		return build(args,body)
 	end
 end
 
