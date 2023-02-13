@@ -1,0 +1,1 @@
+return function() return require'shortf.it.common'(true)end

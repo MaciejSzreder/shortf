@@ -1,1 +1,0 @@
-return function() return require'shortf.functionalit.common'()end
