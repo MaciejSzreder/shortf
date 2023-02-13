@@ -104,6 +104,9 @@ local fib = f'n'[[
 todo
 ----
 ⬜ currling  
+⬜ memoization  
 ⬜ upvalues  
+⬜ errors maping  
 ⬜ multiline functions  
-⬜ `it`-closures
+⬜ does `f'-'` should reprezent both binary and unary operator `-`?  
+⏱️ `it`-closures
