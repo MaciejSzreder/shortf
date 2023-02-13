@@ -103,10 +103,15 @@ local fib = f'n'[[
 
 todo
 ----
+⏱️ expression templates
 ⬜ currling  
+⬜ partial apply
+⬜ partial apply by name  
 ⬜ memoization  
-⬜ upvalues  
-⬜ errors maping  
+⬜ upvalues   
 ⬜ multiline functions  
-⬜ does `f'-'` should reprezent both binary and unary operator `-`?  
-⏱️ `it`-closures
+⬜ local variable creating
+⬜ errors maping 
+⬜ does `f'-'` should represent both binary and unary operator `-`?  
+⬜ does expression templates should serve `__newindex`?
+⬜ what should return casting to string?
