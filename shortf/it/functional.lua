@@ -1,1 +1,6 @@
-return function() return require'shortf.it.common'(true)end
+return function()
+	return require'shortf.it.common'{
+		functional = true,
+		install = true
+	}
+end

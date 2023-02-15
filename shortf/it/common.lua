@@ -21,7 +21,8 @@ local function callable_creator(fun)
 	},fun_mt)
 end
 
-local function initialize(install)
+local function initialize(options)
+	local install = options.install
 	local fun = function()end
 	creator = function_creator
 	fun_mt = {}
