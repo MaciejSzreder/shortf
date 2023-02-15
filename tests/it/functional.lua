@@ -1,6 +1,10 @@
 local it = require'shortf.it.functional'()
 local f = require'shortf'
 
+assert(type(it)=='function')
+assert(type(it*2)=='function')
+print'it creates functions'
+
 local double = it*2
 assert(double(3)==6)
 local triple = 3*it

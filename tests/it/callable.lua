@@ -1,4 +1,4 @@
-local it = require'shortf.it.semifunctional'()
+local it = require'shortf.it.callable'
 local f = require'shortf'
 
 local double = it*2
@@ -13,9 +13,11 @@ local postfix = it..'_postfix'
 assert(postfix'b'=='b_postfix')
 print'concatenation works'
 
-local quadratic = 2*it*it+it
-assert(quadratic(3)==21)
-print'complex expression works'
+local quadruple = 2*it*2
+assert(quadruple(3)==12)
+local quadruple = 2*2*2*2*2*it*2*2*2*2*2
+assert(quadruple(10)==10240)
+print'multilevel expression works'
 
 local power = it*it
 assert(power(3)==9)
@@ -29,6 +31,9 @@ for _,case in pairs{
 	{o='%',v={11,10,6},r={1,3,4},it=0},
 	{o='^',v={2,3,4},r={8,2^81,81},it=27},
 	{o='..',v={'2','3','4'},r={'23','234','34'},it='33'},
+	-- {o='==',v={2,2,4},r={true,false,false}},
+	-- {o='<',v={3,3,4},r={false,24,12}},
+	-- {o='[]',v={{2,3},{2},1},r={nil,3,2},it=nil},
 } do
 	local o = case.o
 	local l,arg,r = unpack(case.v)
@@ -37,6 +42,8 @@ for _,case in pairs{
 	assert(fun(arg)==pre)
 	local fun=f(o)(it,r)
 	assert(fun(arg)==post)
+	local fun=f(o)(l,f(o)(it,r))
+	assert(fun(arg)==both)
 	local fun=f(o)(it,it)
 	assert(fun(arg)==case.it)
 end
