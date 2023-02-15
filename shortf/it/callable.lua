@@ -1,11 +1,11 @@
 local f = require'shortf'
 
-local expression = {}
-local expression_mt = {}
+expression = {}
+expression_mt = {}
 
 function expression.new(action)
 	return setmetatable({
-		action = action
+		action = action or f'(...)'
 	},expression_mt)
 end
 
@@ -14,7 +14,7 @@ function expression.accepts(expression)
 end
 
 function expression_mt:__call(a)
-	return self.action(a)
+	return rawget(self,'action')(a)
 end
 
 function expression_mt:__add(other)
@@ -257,6 +257,6 @@ function expression_mt:__index(other)
 		return self[other]
 	end)
 end
-
-return expression.new(f'(...)')
+return function() return require'shortf.it.common'{}end
+-- return expression.new(f'(...)')
 

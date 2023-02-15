@@ -15,7 +15,7 @@ local function function_creator(fun)
 	return fun or function(...)return...end
 end
 
-local function callable_creator(fun)
+local function semifunction_creator(fun)
 	return setmetatable({
 		action=fun or function(...)return...end
 	},fun_mt)
@@ -23,25 +23,29 @@ end
 
 local function initialize(options)
 	local install = options.install
-	local fun = function()end
-	creator = function_creator
+	local functional = options.functional
 	fun_mt = {}
-	if install and debug then
-		if debug.getmetatable then
-			fun_mt = debug.getmetatable(fun);
-			if type(fun_mt)=='table' then
-				return	-- creator returns function, fun_mt is old metatable
+	if functional then
+		local fun = function()end
+		creator = function_creator
+		if install and debug then
+			if debug.getmetatable then
+				fun_mt = debug.getmetatable(fun);
+				if type(fun_mt)=='table' then
+					return	-- creator returns function, fun_mt is old metatable
+				end
+			end
+			fun_mt = {}
+			if debug.setmetatable then
+				debug.setmetatable(fun,fun_mt)
+				return	-- creator returns function, fun_mt is new metatable
 			end
 		end
-		fun_mt = {}
-		if debug.setmetatable then
-			debug.setmetatable(fun,fun_mt)
-			return	-- creator returns function, fun_mt is new metatable
-		end
+		-- there is no agree to install it or there is no option to install it
+		creator = semifunction_creator
+		return	-- creator creates callable, fun_mt is new metatable
 	end
-	-- there is no agree to install it or there is no option to install it
-	creator = callable_creator
-	return	-- creator creates callable, fun_mt is new metatable
+	creator = expression.new
 end
 
 local function create(fun)
