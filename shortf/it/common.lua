@@ -69,8 +69,8 @@ local function args(n)
 	return unpack(ret)
 end
 
-return function (install)
-	initialize(install)
+return function(options)
+	initialize(options)
 
 	local old_add = fun_mt.__add
 	function fun_mt:__add(other)

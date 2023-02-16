@@ -1,3 +1,6 @@
+local it = require'shortf.it.constructing'()
+local it_mt = getmetatable(it)
+
 local concat = table.concat
 
 local memorized = {}
@@ -23,6 +26,9 @@ local function f(args)
 	local o = operators[args]
 	if o then
 		return o
+	end
+	if getmetatable(args) == it_mt then
+		return args
 	end
 	return function(body)
 		return build(args,body)
