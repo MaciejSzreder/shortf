@@ -27,7 +27,7 @@ function fun_mt:__index(other)
 end
 
 local it = require'shortf.it.functional'
-local f= require'shortf'
+local f= require'shortf'()
 
 local fun = function()end
 

@@ -1,7 +1,3 @@
-local fun_mt
-local creator
-local child_creator
-
 local pass = function(...)return...end
 
 local it_functions = {}
@@ -25,58 +21,63 @@ local function function_creator(fun)
 	return fun or pass
 end
 
-local function callable_creator(fun)
-	return setmetatable({
-		action=fun or pass
-	},fun_mt)
-end
+return function(options)
+	local fun_mt
+	local creator
+	local child_creator
 
-local function initialize(options)
-	local install = options.install
-	local functional = options.functional
-	fun_mt = {}
-	child_creator = function_creator
-	if functional then
-		local fun = function()end
-		creator = function_creator
-		if install and debug then
-			if debug.getmetatable then
-				fun_mt = debug.getmetatable(fun);
-				if type(fun_mt)=='table' then
-					return	-- creator returns function, fun_mt is old metatable
+	local function callable_creator(fun)
+		return setmetatable({
+			action=fun or pass
+		},fun_mt)
+	end
+	
+	local function create(fun)
+		return register(child_creator(fun))
+	end
+	
+	local function create_it(fun)
+		return register(creator(fun))
+	end
+
+	local function args(n)
+		local ret = {}
+		for i =  1,n do
+			ret[i] = create_it(function(...)return select(i,...)end)
+		end
+		return unpack(ret)
+	end
+
+	local function initialize(options)
+		local install = options.install
+		local functional = options.functional
+		fun_mt = {}
+		child_creator = function_creator
+		if functional then
+			local fun = function()end
+			creator = function_creator
+			if install and debug then
+				if debug.getmetatable then
+					fun_mt = debug.getmetatable(fun);
+					if type(fun_mt)=='table' then
+						return	-- creator returns function, fun_mt is old metatable
+					end
+				end
+				fun_mt = {}
+				if debug.setmetatable then
+					debug.setmetatable(fun,fun_mt)
+					return	-- creator returns function, fun_mt is new metatable
 				end
 			end
-			fun_mt = {}
-			if debug.setmetatable then
-				debug.setmetatable(fun,fun_mt)
-				return	-- creator returns function, fun_mt is new metatable
-			end
+			-- there is no agree to install it or there is no option to install it
+			creator = callable_creator
+			return	-- creator creates callable, fun_mt is new metatable
 		end
-		-- there is no agree to install it or there is no option to install it
 		creator = callable_creator
-		return	-- creator creates callable, fun_mt is new metatable
+		child_creator = callable_creator
 	end
-	creator = callable_creator
-	child_creator = callable_creator
-end
+	
 
-local function create(fun)
-	return register(child_creator(fun))
-end
-
-local function create_it(fun)
-	return register(creator(fun))
-end
-
-local function args(n)
-	local ret = {}
-	for i =  1,n do
-		ret[i] = create_it(function(...)return select(i,...)end)
-	end
-	return unpack(ret)
-end
-
-return function(options)
 	initialize(options)
 
 	local old_add = fun_mt.__add

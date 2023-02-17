@@ -61,4 +61,4 @@ operators['false']=f'''false'
 operators['nil']=f'''nil'
 operators['if']=f'c,a,b''(c and {a} or {b})[1]'
 
-return f
+return function() return f, it end
