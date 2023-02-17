@@ -1,4 +1,4 @@
-local f = require'shortf'
+local f = require'shortf'()
 
 for operator in ('+,-,*,/,%,^,==,~=,>=,<=,<,>,and,or,not,..,#,[],(),(...),{...},true,false,nil,if'):gmatch'([^,%s]+)' do
 	assert(type(f(operator))=='function')
@@ -41,4 +41,3 @@ end
 for i=1,10 do
 	assert(fib(i)==f_fib(i))
 end
-print'recurencive f-function works'
