@@ -1,8 +1,9 @@
-local it = require'shortf.it.callable'()
+local it = require'shortf.it.constructing'()
 local f = require'shortf'
 
-local get_price = f(it.getPrice())
-assert(get_price{getPrice=f'''1'}==1)
+local get_price = f(it:getPrice())
+local product = {getPrice=f'''1'}
+assert(get_price(product)==1)
 print'calling works'
 
 local double = f(it*2)

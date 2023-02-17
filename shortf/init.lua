@@ -28,7 +28,7 @@ local function f(args)
 		return o
 	end
 	if getmetatable(args) == it_mt then
-		return args
+		return args.action
 	end
 	return function(body)
 		return build(args,body)

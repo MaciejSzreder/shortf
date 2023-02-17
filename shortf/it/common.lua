@@ -14,6 +14,13 @@ local function is_it_function(fun)
 	return it_functions[fun]
 end
 
+local function call(f,...)
+	if type(f)=='function' then
+		return f(...)
+	end
+	return f.action(...)
+end
+
 local function function_creator(fun)
 	return fun or pass
 end
@@ -76,17 +83,17 @@ return function(options)
 	function fun_mt:__add(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) + other(...)
+				return call(self,...) + call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) + other
+				return call(self,...) + other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self + other(...)
+				return self + call(other,...)
 			end)
 		end
 		if old_add and (type(self)=='function' or type(other)=='function') then
@@ -101,17 +108,17 @@ return function(options)
 	function fun_mt:__sub(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) - other(...)
+				return call(self,...) - call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) - other
+				return call(self,...) - other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self - other(...)
+				return self - call(other,...)
 			end)
 		end
 		if old_sub and (type(self)=='function' or type(other)=='function') then
@@ -126,17 +133,17 @@ return function(options)
 	function fun_mt:__mul(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) * other(...)
+				return call(self,...) * call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) * other
+				return call(self,...) * other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self * other(...)
+				return self * call(other,...)
 			end)
 		end
 		if old_mul and (type(self)=='function' or type(other)=='function') then
@@ -151,17 +158,17 @@ return function(options)
 	function fun_mt:__div(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) / other(...)
+				return call(self,...) / call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) / other
+				return call(self,...) / other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self / other(...)
+				return self / call(other,...)
 			end)
 		end
 		if old_div and (type(self)=='function' or type(other)=='function') then
@@ -176,17 +183,17 @@ return function(options)
 	function fun_mt:__mod(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) % other(...)
+				return call(self,...) % call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) % other
+				return call(self,...) % other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self % other(...)
+				return self % call(other,...)
 			end)
 		end
 		if old_mod and (type(self)=='function' or type(other)=='function') then
@@ -201,17 +208,17 @@ return function(options)
 	function fun_mt:__pow(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) ^ other(...)
+				return call(self,...) ^ call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) ^ other
+				return call(self,...) ^ other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self ^ other(...)
+				return self ^ call(other,...)
 			end)
 		end
 		if old_pow and (type(self)=='function' or type(other)=='function') then
@@ -226,17 +233,17 @@ return function(options)
 	function fun_mt:__concat(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...) .. other(...)
+				return call(self,...) .. call(other,...)
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...) .. other
+				return call(self,...) .. other
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self .. other(...)
+				return self .. call(other,...)
 			end)
 		end
 		if old_concat and (type(self)=='function' or type(other)=='function') then
@@ -251,17 +258,17 @@ return function(options)
 	function fun_mt:__index(other)
 		if is_it_function(self) and is_it_function(other) then
 			return create(function (...)
-				return self(...)[other(...)]
+				return call(self,...)[call(other,...)]
 			end)
 		end
 		if is_it_function(self) then
 			return create(function (...)
-				return self(...)[other]
+				return call(self,...)[other]
 			end)
 		end
 		if is_it_function(other) then
 			return create(function (...)
-				return self[other(...)]
+				return self[call(other,...)]
 			end)
 		end
 		if old_index and type(self)=='function' then
@@ -272,8 +279,35 @@ return function(options)
 		end)
 	end
 
-	function fun_mt:__call(...)
-		return self.action(...)
+	if options.constructing then
+		local old_call = fun_mt.__call
+		function fun_mt:__call(other)
+			if is_it_function(self) and is_it_function(other) then
+				return create(function (...)
+					return call(self,...)(other(...))
+				end)
+			end
+			if is_it_function(self) then
+				return create(function (...)
+					return call(self,...)[other]
+				end)
+			end
+			if is_it_function(other) then
+				return create(function (...)
+					return self(other(...))
+				end)
+			end
+			if old_call and type(self)=='function' then
+				return old_call(self,other)
+			end
+			return create(function (...)
+				return self(other)
+			end)
+		end
+	else
+		function fun_mt:__call(...)
+			return self.action(...)
+		end
 	end
 
 	return create_it(), args
