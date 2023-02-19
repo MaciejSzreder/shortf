@@ -116,3 +116,4 @@ todo
 ⬜ does expression templates should serve `__newindex`?
 ⬜ what should return casting to string?  
 ⬜ sentiel for `args`
+⬜ recursive `self` for expression pemplates
