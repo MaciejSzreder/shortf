@@ -1,4 +1,4 @@
-local it = require'shortf.it.constructing'()
+local it, args = require'shortf.it.constructing'()
 local it_mt = getmetatable(it)
 
 local concat = table.concat
@@ -61,4 +61,12 @@ operators['false']=f'''false'
 operators['nil']=f'''nil'
 operators['if']=f'c,a,b''(c and {a} or {b})[1]'
 
-return function() return f, it end
+return setmetatable({
+	it = it,
+	f = f,
+	args = args
+},{
+	__call = function(self,...)
+		return f(...)
+	end
+})
