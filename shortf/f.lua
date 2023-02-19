@@ -1,5 +1,5 @@
-local args = require'shortf.it.constructing'
-local it = args.it
+local expression = require'shortf.expression.constructing'
+local it = expression.it
 local it_mt = getmetatable(it)
 
 local concat = table.concat
@@ -65,7 +65,7 @@ operators['if']=f'c,a,b''(c and {a} or {b})[1]'
 return setmetatable({
 	it = it,
 	f = f,
-	args = args
+	args = expression
 },{
 	__call = function(self,...)
 		return f(...)
