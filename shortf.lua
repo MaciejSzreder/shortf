@@ -1,1 +1,1 @@
-return require'shortf.init'
+return require'shortf.f'

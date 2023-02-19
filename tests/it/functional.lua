@@ -1,5 +1,5 @@
-local it = require'shortf.it.functional'()
-local f = require'shortf'()
+local it = require'shortf.it.functional'.it
+local f = require'shortf'
 
 assert(type(it)=='function')
 assert(type(it*2)=='function')

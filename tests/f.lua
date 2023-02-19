@@ -1,4 +1,4 @@
-local f = require'shortf'()
+local f = require'shortf'
 
 for operator in ('+,-,*,/,%,^,==,~=,>=,<=,<,>,and,or,not,..,#,[],(),(...),{...},true,false,nil,if'):gmatch'([^,%s]+)' do
 	assert(type(f(operator))=='function')

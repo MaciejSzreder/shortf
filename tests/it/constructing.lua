@@ -1,4 +1,5 @@
-local f, it = require'shortf'()
+local f = require'shortf'
+local it = f.it
 
 local get_price = f(it:getPrice())
 local product = {getPrice=f'''1'}

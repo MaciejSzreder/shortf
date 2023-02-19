@@ -1,5 +1,5 @@
-local it = require'shortf.it.callable'()
-local f = require'shortf'()
+local it = require'shortf.it.callable'.it
+local f = require'shortf'
 
 local double = it*2
 assert(double(3)==6)
