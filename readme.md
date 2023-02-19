@@ -114,4 +114,5 @@ todo
 ⬜ errors maping 
 ⬜ does `f'-'` should represent both binary and unary operator `-`?  
 ⬜ does expression templates should serve `__newindex`?
-⬜ what should return casting to string?
+⬜ what should return casting to string?  
+⬜ sentiel for `args`
