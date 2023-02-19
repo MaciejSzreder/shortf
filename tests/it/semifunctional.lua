@@ -1,4 +1,4 @@
-local it = require'shortf.it.semifunctional'()
+local it = require'shortf.it.semifunctional'.it
 local f = require'shortf'
 
 

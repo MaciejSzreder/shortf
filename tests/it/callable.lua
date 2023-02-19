@@ -1,4 +1,4 @@
-local it = require'shortf.it.callable'()
+local it = require'shortf.it.callable'.it
 local f = require'shortf'
 
 local double = it*2

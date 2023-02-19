@@ -311,5 +311,12 @@ return function(options)
 		end
 	end
 
-	return create_it(), args
+	return setmetatable({
+		it = create_it(),
+		args = args
+	},{
+		__call = function(self,n)
+			return args(n)
+		end
+	})
 end

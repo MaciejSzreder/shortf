@@ -1,4 +1,5 @@
-local it, args = require'shortf.it.constructing'()
+local args = require'shortf.it.constructing'
+local it = args.it
 local it_mt = getmetatable(it)
 
 local concat = table.concat

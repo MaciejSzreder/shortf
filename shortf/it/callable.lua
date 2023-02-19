@@ -1,1 +1,1 @@
-return function() return require'shortf.it.common'{} end
+return require'shortf.it.common'{}

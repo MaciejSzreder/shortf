@@ -26,7 +26,7 @@ function fun_mt:__index(other)
 	return '[]'
 end
 
-local it = require'shortf.it.functional'
+local it = require'shortf.it.functional'.it
 local f= require'shortf'
 
 local fun = function()end
