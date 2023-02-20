@@ -103,17 +103,19 @@ local fib = f'n'[[
 
 todo
 ----
-⏱️ expression templates
+⏱️ expression templates  
 ⬜ currling  
-⬜ partial apply
+⬜ partial apply  
 ⬜ partial apply by name  
 ⬜ memoization  
-⬜ upvalues   
+⬜ upvalues  
 ⬜ multiline functions  
-⬜ local variable creating
-⬜ errors maping 
+⬜ local variable creating  
+⬜ errors maping  
 ⬜ does `f'-'` should represent both binary and unary operator `-`?  
-⬜ does expression templates should serve `__newindex`?
+⬜ does expression templates should serve `__newindex`?  
 ⬜ what should return casting to string?  
-⬜ sentiel for `args`
-⬜ recursive `self` for expression pemplates
+⬜ sentiel for `args`  
+⬜ recursive `self` for expression pemplates  
+⬜ `f` could be exploited  
+⬜ make `f` to not require `loadstring`  
