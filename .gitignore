@@ -1,6 +1,7 @@
 .vscode
 benchmark.lua
 benchmarks
+test
 
 # Compiled Lua sources
 luac.out

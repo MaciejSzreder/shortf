@@ -14,7 +14,7 @@ The `shortf` contains function `f` and template expression indicator `it`.
 ```lua
 local shortf = require'shortf'
 local f = shortf.f
-local it = short.it
+local it = shortf.it
 ```
 
 function `f`
@@ -24,8 +24,8 @@ The `f` is used to create functions or get functions performing operators.
 ### `f` operators
 To obtain function performing operators on theirs arguments, pass its string representation.
 ```lua
-local add = f'+'
-local phi = f'/'(f'+'(f'^'(5,0.5),1),2) -- phi = ((5^0.5)+1)/2
+local add = f'+'	--> add is function
+local phi = f'/'(f'+'(f'^'(5,0.5),1),2) --> phi = ((5^0.5)+1)/2
 ```
 Supported operators:
 `f` operator | `f` closure

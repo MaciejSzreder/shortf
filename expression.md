@@ -23,14 +23,14 @@ object `it`
 The `it` is used to create functions. Use it with operators to create function or call it to get result of calculations.
 ```lua
 local circle_area = it*it*math.pi
-print(circle_area(1/math.pi))	--> prints 1
+print(circle_area(1))	--> prints 3.1415...
 ```
 
 Due calling executes the calculations, so using in expression give unexpected result
 ```lua
-local getPrice = it.getPrice()*it.getDiscount()
+local getPrice = it.getPrice()*it.getDiscount()	--> error 
 local stubProduct = {getPrice=f'''1',getDiscount=f'''1'}
-print(getPrice(stubProduct))	--> error 
+print(getPrice(stubProduct))
 ```
 The error is caused by executing `it.getPrice()`, where no argument was passed, so it tries get field `getPrice` from `nil`.
 
