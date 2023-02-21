@@ -1,104 +1,75 @@
 Short f
 ======
-Short f is Lua liblary providing short syntax for closure creation. The liblary is tested in Lua 5.1.
+Short f is Lua liblary providing short syntax for function creation. The liblary is tested in Lua 5.1.
 
-Syntax
-------
-To use the liblary you have to `require` it.
-```lua
-local f = require'shortf'
-```
-
-The Lua standard closure creation syntax is long.
+Motivation
+----------
+In pure lua creating function is verbose:
 ```lua
 local closure = function(a,b)
 	return a+b
 end
 ```
-This liblary allow to shorten it.
+This construction is awkward to use as argument. Eg. when you want to sort in decreasing order:
 ```lua
-local closure = f'a,b''a+b'
+local numbers = {3,1,4,1,5}
+table.sort(numbers,function(first,second) return first>second end)
+print(unpack(numbers)) --> prints 5 4 1 1
 ```
-Or even shorter.
-```lua
-local closure = f'+'
-```
-### `f`-closure syntax
-The `f` for function creating, takes 2 curring arguments. The first is string contains arguments identifiers separated with comma, the last argument can be elipsis `...`. The second is string representing expression which value will be returned.
+This liblary allows to make it more concrete.
 
-Zero argument function returning current Lua version
+Importing
+---------
+The main module is in `shortf`.
 ```lua
-local getVersion = f'''__VERSION'
-```
-
-Function calculating price for product.
-```lua
-local getPrice = f'product''product.price*product.promotion'
+local f = require'shortf'
 ```
 
-Function duplicating first argument.
+Content
+-------
+### functions for operators
+This liblary have short syntax of function for operator: just pass operator as string to `f`:
 ```lua
-local double = f'...''...,...'
-```
-
-Function counting its arguments.
-```lua
-local len = f'...''select("#",...)'
-```
-### `f`-operator closures
-If you often require to create closure for single operator to use, you can use closures created for operators. To get them, pass its string representation to `f`.  
-Supported operators: `+`, `-`, `*`, `/`, `%`, `^`, `==`, `~=`, `>=`, `<=`, `<`, `>`, `and`, `or`, `not`, `..`, `#`, `[]` _index access_, `()` _function call_, `{...}` _table creation_. As long they are not valid identifiers, as long they do not colide with closure creation `f` syntax.
-
-`f`-operator | `f`-closure
--------------|------------
-`f'+'`       | `f'a,b''a+b'`
-`f'-'`       | `f'a,b''a-b'`
-`f'*'`       | `f'a,b''a*b'`
-`f'/'`       | `f'a,b''a/b'`
-`f'%'`       | `f'a,b''a%b'`
-`f'^'`       | `f'a,b''a^b'`
-`f'=='`      | `f'a,b''a==b'`
-`f'~='`      | `f'a,b''a~=b'`
-`f'>='`      | `f'a,b''a>=b'`
-`f'<='`      | `f'a,b''a<=b'`
-`f'<'`       | `f'a,b''a<b'`
-`f'>'`       | `f'a,b''a>b'`
-`f'and'`     | `f'a,b''a and b'`
-`f'or'`      | `f'a,b''a or b'`
-`f'not'`     | `f'a,b''not b'`
-`f'..'`      | `f'a,b''a..b'`
-`f'#'`       | `f'a,b''#b'`
-`f'[]'`      | `f'a,b''a[b]'`
-`f'(...)'`   | `f'...''...'`
-`f'{...}'`   | `f'...''{...}'`
-`f'()'`      | `f'f,...''f(...)'`
-
-Sort in reversed order.
-```lua
-table.sort(prices,f'>')
+local numbers = {3,1,4,1,5}
+table.sort(numbers,f'>')
+print(unpack(numbers)) --> prints 5 4 1 1
 ```
 
 ### other build in `f`-function
-There also other invalid identifiers whitch was used to create closures. Some of them was selected to represents some functions
-
-`f`-function | `f`-closure
--------------|------------
-`f'(...)'`   |`f'...''...'`
-`f'true'`    |`f'''true'`
-`f'false,'`  |`f'''false'`
-`f'nil'`     |`f'''nil'`
-`f'if'`      |`f'condition, onTrue, onFalse''(condition and {onTrue} or {onFalse})[1]'`
-
-### recursion in `f`-closures
-Performing recursion by calling function name do not work, because `f` do not have access to local variables. To solve this problem `f` provides local variable `self` containing current function.
-
-Recursive calculating Fibonacci numbers.
+For some invalid parameters list are prepared functions.
 ```lua
-local fib = f'n'[[
-	n<2
-	and n
-	or self(n-1)+self(n-1)
-]]
+local pass = f'(...)'
+print(pass(1,2))	--> prints 1 2
+```
+
+### function creation with `f`
+You can create simple functions with `f` by passing parameter list and body expression.
+```lua
+local length = f'n''math.floor(math.log(n,10))+1' -- count diigits in decimal base
+print(length(10))	--> prints 2
+```
+
+### expression templates witf `f`
+You can use `f.it` or `f.args` to keep highlighting.
+```lua
+local it = f.it
+```
+You can pass expression with `it` to `f` to create function.
+```lua
+local gold = f((it+(it^2+4)^0.5)/2)
+print(gold(0))	--> prints 1
+```
+
+### expression templates witfout `f`
+You can use `it` and `args` from `shortf.expression` to keep highlighting and do not use `f` to build function.
+```lua
+local args = require'shortf.expression'
+local it = args.it
+```
+You can create callable with `it`.
+```lua
+local silver = (it-(it^2+4)^0.5)/2
+print(gold(0))	--> prints -1
 ```
 
 todo
