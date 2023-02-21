@@ -87,3 +87,13 @@ local gcd = f'a,b'[[
 ]]
 print(gcd(12,18)) -- prints 6
 ```
+### `f` other functions
+For some invalid parameter list is assigned function.
+
+`f`-function | `f`-closure
+-------------|------------
+`f'(...)'`   |`f'...''...'`
+`f'true'`    |`f'''true'`
+`f'false,'`  |`f'''false'`
+`f'nil'`     |`f'''nil'`
+`f'if'`      |`f'condition, onTrue, onFalse''(condition and {onTrue} or {onFalse})[1]'`
