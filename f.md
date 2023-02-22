@@ -2,7 +2,7 @@
 ========
 Importing and content
 ---------------------
-The module `shortf` is callable table. To import it type:
+The module `shortf` is callable table. To import it, type:
 ```lua
 local f = require'shortf'
 ```
@@ -10,11 +10,12 @@ Calling this table works the same as function `f` and you can eg. create functio
 ```lua
 local area = f'r''r^2*math.pi'
 ```
-The `shortf` contains function `f` and template expression indicator `it`.
+The `shortf` contains function `f`, template expression indicator `it`, and function `args`.
 ```lua
 local shortf = require'shortf'
 local f = shortf.f
 local it = shortf.it
+local args = shortf.args
 ```
 
 function `f`
@@ -97,3 +98,56 @@ For some invalid parameter list is assigned function.
 `f'false,'`  |`f'''false'`
 `f'nil'`     |`f'''nil'`
 `f'if'`      |`f'condition, onTrue, onFalse''(condition and {onTrue} or {onFalse})[1]'`
+
+### expresion template with `f`
+If arguments for `f` are strings, linters do not show any error and parser show syntax error on the run time. Use `f.it` or `f.args` towrite expression and allow linters and paresrs to analyse the syntax. To extract function from expression pass it to `f`.
+
+#### expresion template with `f.it`
+`f.it` is itself expression template, as a function it passes through all parameters.
+```lua
+local pass = f(it)
+print(pass(1,2,3))	--> prints 1 2 3
+```
+Using operators with `f.it` creates next expresion template, but it losts all parameters but first.
+```lua
+local polynomial = f(2*it^3+it*it+1)
+print(polynomial(3))	--> prints 64
+```
+
+#### expresion template with `f.args`
+If you need more parameters than just one for expression template use `f.args` with number of parameters, and assing the results to variables. Each wariable captures single parameter.
+```lua
+local a,b = args(2)
+local first = f(a)
+local second = f(b)
+print(first(1,2))	--> prints 1
+print(second(1,2))	--> prints 2
+```
+Mixing result of `f.args` and operators gine next expression template.
+```lua
+local a,b,c = args(3)
+local delta = f(a^2-4*a*c)
+print(delta(1,2,3))	--> prints -23
+```
+### supported expressions
+expression    | support
+--------------|--------
+`a[b]`        | only `a`
+`a(b)`        | only `a`
+`a[b]=c`      | no
+`a+b`         | yes
+`a-b`         | yes
+`-a`          | no
+`a*b`         | yes
+`a/b`         | yes
+`a%b`         | yes
+`a^b`         | yes
+`a..b`        | yes
+`a<b`         | no
+`a<=b`        | no
+`a==b`        | no
+`a and b`     | no
+`a or b`      | no
+`not b`       | no
+`#b`          | no
+`tostring(a)` | no
