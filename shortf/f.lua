@@ -1,8 +1,11 @@
 local expression = require'shortf.expression.constructing'
 local it = expression.it
-local it_mt = getmetatable(it)
 
 local concat = table.concat
+local loadstring = loadstring
+local getmetatable = getmetatable
+
+local it_mt = getmetatable(it)
 
 local memorized = {}
 local operators = {}

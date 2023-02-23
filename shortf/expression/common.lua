@@ -1,4 +1,12 @@
+local type = type
+local setmetatable = setmetatable
+local select = select
+local unpack = unpack
+local debug_getmetatable = debug.getmetatable
+local debug_setmetatable = debug.setmetatable
+
 local pass = function(...)return...end
+local fun = function()end
 
 local it_functions = {}
 local function register(fun)
@@ -43,7 +51,7 @@ return function(options)
 	local function args(n)
 		local ret = {}
 		for i =  1,n do
-			ret[i] = create_it(function(...)return select(i,...)end)
+			ret[i] = create_it(function(...)return (select(i,...)) end)
 		end
 		return unpack(ret)
 	end
@@ -54,18 +62,17 @@ return function(options)
 		fun_mt = {}
 		child_creator = function_creator
 		if functional then
-			local fun = function()end
 			creator = function_creator
 			if install and debug then
-				if debug.getmetatable then
-					fun_mt = debug.getmetatable(fun);
+				if debug_getmetatable then
+					fun_mt = debug_getmetatable(fun);
 					if type(fun_mt)=='table' then
 						return	-- creator returns function, fun_mt is old metatable
 					end
 				end
 				fun_mt = {}
-				if debug.setmetatable then
-					debug.setmetatable(fun,fun_mt)
+				if debug_setmetatable then
+					debug_setmetatable(fun,fun_mt)
 					return	-- creator returns function, fun_mt is new metatable
 				end
 			end
@@ -290,7 +297,7 @@ return function(options)
 			end
 			if is_it_function(self) then
 				return create(function (...)
-					return call(self,...)[other]
+					return call(self,...)(other)
 				end)
 			end
 			if is_it_function(other) then
