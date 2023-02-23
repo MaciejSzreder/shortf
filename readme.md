@@ -1,6 +1,6 @@
 Short f
 ======
-Short f is Lua liblary providing short syntax for function creation. The liblary is tested in Lua 5.1.
+Short f is Lua library providing short syntax for function creation. The library is tested in Lua 5.1.
 
 Motivation
 ----------
@@ -14,9 +14,9 @@ This construction is awkward to use as argument. Eg. when you want to sort in de
 ```lua
 local numbers = {3,1,4,1,5}
 table.sort(numbers,function(first,second) return first>second end)
-print(unpack(numbers)) --> prints 5 4 1 1
+print(unpack(numbers)) --> prints 5 4 3 1 1
 ```
-This liblary allows to make it more concrete.
+This library allows to make it more concrete.
 
 Importing
 ---------
@@ -28,11 +28,11 @@ local f = require'shortf'
 Content
 -------
 ### functions for operators
-This liblary have short syntax of function for operator: just pass operator as string to `f`:
+This library have short syntax of function for operator: just pass operator as string to `f`:
 ```lua
 local numbers = {3,1,4,1,5}
 table.sort(numbers,f'>')
-print(unpack(numbers)) --> prints 5 4 1 1
+print(unpack(numbers)) --> prints 5 4 3 1 1
 ```
 
 ### other build in `f`-function
@@ -45,11 +45,11 @@ print(pass(1,2))	--> prints 1 2
 ### function creation with `f`
 You can create simple functions with `f` by passing parameter list and body expression.
 ```lua
-local length = f'n''math.floor(math.log(n,10))+1' -- count diigits in decimal base
+local length = f'n''math.floor(math.log(n)/math.log(10))+1' -- count digits in decimal base
 print(length(10))	--> prints 2
 ```
 
-### expression templates witf `f`
+### expression templates with `f`
 You can use `f.it` or `f.args` to keep highlighting.
 ```lua
 local it = f.it
@@ -60,7 +60,7 @@ local gold = f((it+(it^2+4)^0.5)/2)
 print(gold(0))	--> prints 1
 ```
 
-### expression templates witfout `f`
+### expression templates without `f`
 You can use `it` and `args` from `shortf.expression` to keep highlighting and do not use `f` to build function.
 ```lua
 local args = require'shortf.expression'
@@ -69,22 +69,24 @@ local it = args.it
 You can create callable with `it`.
 ```lua
 local silver = (it-(it^2+4)^0.5)/2
-print(gold(0))	--> prints -1
+print(silver(0))	--> prints -1
 ```
 
 todo
 ----
-⏱️ expression templates
-⬜ currling  
-⬜ partial apply
+⏱️ expression templates  
+⬜ currying  
+⬜ partial apply  
 ⬜ partial apply by name  
 ⬜ memoization  
-⬜ upvalues   
+⬜ upvalues  
 ⬜ multiline functions  
-⬜ local variable creating
-⬜ errors maping 
+⬜ local variable creating  
+⬜ errors mapping  
 ⬜ does `f'-'` should represent both binary and unary operator `-`?  
-⬜ does expression templates should serve `__newindex`?
+⬜ does expression templates should serve `__newindex`?  
 ⬜ what should return casting to string?  
-⬜ sentiel for `args`
-⬜ recursive `self` for expression pemplates
+⬜ sentinel for `args`  
+⬜ recursive `self` for expression templates  
+⬜ `f` could be exploited  
+⬜ make `f` to not require `loadstring`  
