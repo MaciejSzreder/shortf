@@ -1,12 +1,12 @@
 Requirements
 ============
-The table below show whitch functions are required to create function in certain way.  
+The table below show which functions are required to create function in certain way.  
 
-` `                 | `getmetatable` | `table.concat` | `loadstring` | `type` | `setmetatable` | `select`&`unpack` | `debug.getmetatable`\|`debug.setmetatable`
---------------------|----------------|----------------|--------------|--------|----------------|-------------------|-------------------------------------------
-is implemented      | offen          | offen          | unsecure     | offen  | offen          | offen             | unsecure
-`f'args''body'`     | !              | !              | !            |        |                |                   | 
-constructing `it`   |                |                |              | !      | !              | `args`            | 
-callable `it`       |                |                |              | !      | !              | `args`            | 
-functional `it`     |                |                |              | !      | !              | `args`            | !
-semifunctional `it` |                |                |              | !      | !              | `args`            | 
+&nbsp;              | `debug.getmetatable` or `debug.setmetatable` | `loadstring` | `getmetatable` | `setmetatable` | `type` | `table.concat` | `select` and `unpack` 
+--------------------|----------------------------------------------|--------------|----------------|----------------|--------|----------------|-------------------
+usability level     | unsecure                                     | unsecure     | high           | high           | high   | implementable  | implementable     
+`f'args''body'`     |                                              | !            | !              |                |        | !              |                   
+constructing `it`   |                                              |              |                | !              | !      |                | `args`            
+callable `it`       |                                              |              |                | !              | !      |                | `args`            
+functional `it`     | !                                            |              |                | !              | !      |                | `args`            
+semifunctional `it` |                                              |              |                | !              | !      |                | `args`             
