@@ -26,7 +26,8 @@ The `f` is used to create functions or get functions performing operators.
 To obtain function performing operators on theirs arguments, pass its string representation.
 ```lua
 local add = f'+'	--> add is function
-local phi = f'/'(f'+'(f'^'(5,0.5),1),2) --> phi = ((5^0.5)+1)/2
+local phi = f'/'(f'+'(f'^'(5,0.5),1),2) --> phi == ((5^0.5)+1)/2
+print(phi)	--> prints 1.6180...
 ```
 Supported operators:
 `f` operator | `f` closure
@@ -60,22 +61,24 @@ You can use `f` to create simple functions. The `f` takes a parameter list and a
 If function takes no argument, pass empty string as parameter list:
 ```lua
 local getVersion = f'''_VERSION'
+print(getVersion())	-->  print(_VERSION)
 ```
 To take all parameters use ellipsis:
 ```lua
 local quantity_print = f'...''print(select("#",...),...)'
+quantity_print('first','second')	--> prints 2 first second
 ```
 
 #### upvalues and environment
 Functions created with `f` are not aware local variables of environment in which it was created, but have access to globals:
 ```lua
 local circle_area = f'r''r*r*math.pi'
-print(circle_area(10)) -- OK
+print(circle_area(10)) --> prints 314.1592...
 ```
 ```lua
 local pi = math.pi
 local circle_area = f'r''r*r*pi'
-print(circle_area(10)) -- error
+print(circle_area(10)) --> error
 ```
 
 #### recursion
