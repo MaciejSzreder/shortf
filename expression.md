@@ -10,6 +10,7 @@ Calling this table works the same as function `args` and you can create object r
 ```lua
 local point1,point2 = args(2)
 local distance = ((point1.x-point2.x)^2+(point1.y-point2.y)^2)^0.5
+print(distance({x=1,y=2},{x=4,y=6}))	--> prints 5
 ```
 The `shortf.expression` contains template expression indicator `it` and function `args`.
 ```lua
@@ -26,7 +27,7 @@ local circle_area = it*it*math.pi
 print(circle_area(1))	--> prints 3.1415...
 ```
 
-Due calling executes the calculations, so using in expression give unexpected result
+Due calling executes the calculations, using in expression give unexpected result
 ```lua
 local getPrice = it.getPrice()*it.getDiscount()	--> error 
 local stubProduct = {getPrice=f'''1',getDiscount=f'''1'}
