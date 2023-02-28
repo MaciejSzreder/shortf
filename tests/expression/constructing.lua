@@ -52,11 +52,22 @@ for _,case in pairs{
 	local fun=f(f(o)(it,it))
 	assert(fun(arg)==case.it)
 end
+print'operators work'
 
 local fun=f(it[1])
 assert(fun({3})==3)
+print'index access works'
 
 local fun=f(it[it])
 local s={}
 s[s]=3
 assert(fun(s)==3)
+print'self indexing works'
+
+local fun=f(it(3))
+assert(fun(f'a''a')==3)
+print'function call works'
+
+local fun=f(it(it))
+assert(fun(f'a''a')==f'a''a')
+print'self calling works'

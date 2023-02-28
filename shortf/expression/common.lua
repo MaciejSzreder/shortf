@@ -292,7 +292,7 @@ return function(options)
 		function fun_mt:__call(other)
 			if is_it_function(self) and is_it_function(other) then
 				return create(function (...)
-					return call(self,...)(other(...))
+					return call(self,...)(call(other,...))
 				end)
 			end
 			if is_it_function(self) then
@@ -302,7 +302,7 @@ return function(options)
 			end
 			if is_it_function(other) then
 				return create(function (...)
-					return self(other(...))
+					return self(call(other,...))
 				end)
 			end
 			if old_call and type(self)=='function' then
