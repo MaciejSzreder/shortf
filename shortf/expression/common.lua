@@ -29,6 +29,18 @@ local function function_creator(fun)
 	return fun or pass
 end
 
+local function expression_map(args,...)
+	local mapped = {} 
+	for key, value in pairs(args) do
+		if is_it_function(value) then
+			mapped[key] = call(value,...)
+		else
+			mapped[key] = value
+		end
+	end
+	return mapped
+end
+
 return function(options)
 	local fun_mt
 	local creator
@@ -289,27 +301,18 @@ return function(options)
 
 	if options.constructing then
 		local old_call = fun_mt.__call
-		function fun_mt:__call(other)
-			if is_it_function(self) and is_it_function(other) then
-				return create(function (...)
-					return call(self,...)(call(other,...))
-				end)
-			end
+		function fun_mt:__call(...)
+			local args = {n=select('#',...),...}
 			if is_it_function(self) then
 				return create(function (...)
-					return call(self,...)(other)
-				end)
-			end
-			if is_it_function(other) then
-				return create(function (...)
-					return self(call(other,...))
+					return call(self,...)(unpack(expression_map(args,...),1,args.n))
 				end)
 			end
 			if old_call and type(self)=='function' then
-				return old_call(self,other)
+				return old_call(self,...)
 			end
 			return create(function (...)
-				return self(other)
+				return self(unpack(args,1,args.n))
 			end)
 		end
 	else

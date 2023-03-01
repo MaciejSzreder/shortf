@@ -70,4 +70,6 @@ print'function call works'
 
 local fun=f(it(it))
 assert(fun(f'a''a')==f'a''a')
+local fun=f(it(nil,it))
+assert(fun(f'_,a''a')==f'_,a''a')
 print'self calling works'
