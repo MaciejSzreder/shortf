@@ -23,6 +23,10 @@ local power = it*it
 assert(power(3)==9)
 print'multiple it using works'
 
+local neg = -it
+assert(neg(3)==-3)
+print'sign change works'
+
 for _,case in pairs{
 	{o='+',v={2,3,4},r={5,9,7},it=6},
 	{o='-',v={2,3,5},r={-1,4,-2},it=0},

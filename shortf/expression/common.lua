@@ -99,6 +99,21 @@ return function(options)
 
 	initialize(options)
 
+	local old_unm = fun_mt.__unm
+	function fun_mt:__unm()
+		if is_it_function(self) then
+			return create(function (...)
+				return -call(self,...)
+			end)
+		end
+		if old_unm and (type(self)=='function') then
+			return old_unm(self)
+		end
+		return create(function (...)
+			return -self
+		end)
+	end
+
 	local old_add = fun_mt.__add
 	function fun_mt:__add(other)
 		if is_it_function(self) and is_it_function(other) then
