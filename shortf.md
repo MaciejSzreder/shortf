@@ -135,12 +135,12 @@ print(delta(1,2,3))	--> prints -8
 ### supported expressions
 expression    | support
 --------------|--------
-`a[b]`        | only `a`
-`a(b)`        | only `a`
+`a[b]`        | if `a` is expression template
+`a(b)`        | if `a` is expression template
 `a[b]=c`      | no
 `a+b`         | yes
 `a-b`         | yes
-`-a`          | no
+`-a`          | yes
 `a*b`         | yes
 `a/b`         | yes
 `a%b`         | yes
