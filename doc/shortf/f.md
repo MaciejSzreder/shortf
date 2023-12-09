@@ -1,4 +1,4 @@
-`shortf`
+`shortf.f`
 ========
 Importing and content
 ---------------------
